@@ -1,0 +1,50 @@
+apiVersion: radix.equinor.com/v1
+kind: RadixApplication
+metadata:
+  name: oplog-api
+spec:
+  environments:
+    - name: prod
+    - name: dev
+      build:
+        from: main
+  components:
+    - name: api
+      src: ./src
+      ports:
+        - name: http
+          port: 5000
+      publicPort: http
+      secrets:
+        - AzureAd__ClientSecret
+        - AzureAd__ClientId
+        - KeyVaultEndpoint
+      environmentConfig:
+        - environment: dev
+          runAsNonRoot: true
+          variables:
+            ASPNETCORE_URLS: "http://*:5000"
+            AllowCorsDomains: "http://localhost:3000, https://frontend-oplog-web-dev.radix.equinor.com"
+          replicas: 2
+          monitoring: true
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "200m"
+        - environment: prod
+          runAsNonRoot: true
+          variables:
+            ASPNETCORE_URLS: "http://*:5000"
+            AllowCorsDomains: "http://localhost:3000, https://frontend-oplog-web-prod.radix.equinor.com, https://oplog.equinor.com"
+          replicas: 2
+          monitoring: true
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "200m"

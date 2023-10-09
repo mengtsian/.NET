@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>   
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Commands\OperationAreas\**" />
+    <Compile Remove="Events\**" />
+    <EmbeddedResource Remove="Commands\OperationAreas\**" />
+    <EmbeddedResource Remove="Events\**" />
+    <None Remove="Commands\OperationAreas\**" />
+    <None Remove="Events\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Search.Documents" Version="11.4.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Oplog.Persistence\Oplog.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
